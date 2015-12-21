@@ -1,0 +1,23 @@
+{
+  "name": "tailored.js",
+  "version": "0.1.0",
+  "description": "Utility library for tailored apps backends",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://phrepo@phabricator.tailored-apps.com/diffusion/TAILOREDJS/tailored-js.git"
+  },
+  "keywords": [
+    "utility",
+    "tailored apps"
+  ],
+  "author": "Michael Smesnik",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.10.6",
+    "winston": "^2.1.1"
+  }
+}
