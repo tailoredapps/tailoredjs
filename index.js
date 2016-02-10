@@ -1,6 +1,6 @@
 'use strict'
 
 module.exports = {
-  logger: require('./logger'),
-  request: require('./request')
+  'logger': require('./logger'),
+  'http-request': require('./http-request')
 }
