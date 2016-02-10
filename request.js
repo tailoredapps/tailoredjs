@@ -8,7 +8,7 @@ const request = require('request-promise')
  *
  * @class
  */
-export default class HttpRequest {
+class HttpRequest {
   /**
    * Create a new HttpRequest instance
    *
@@ -47,3 +47,5 @@ export default class HttpRequest {
       .catch(error => Promise.reject(error.cause && error.cause.code === 'ETIMEDOUT' ? createError(504) : error))
   }
 }
+
+module.exports = HttpRequest
