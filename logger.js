@@ -20,41 +20,40 @@ const formatter = (opts) => `[${moment().format('YYYY-MM-DD HH:mm:ss.SSS')}] [${
  * @returns {Object}
  */
 const createLogger = (cfg) => {
-    if (!cfg) {
-        cfg = {}
-    }
+  if (!cfg) {
+    cfg = {}
+  }
 
-    const destinations = cfg.destinations || {}
+  const destinations = cfg.destinations || {}
 
-    let logger = new winston.Logger()
+  let logger = new winston.Logger()
 
-    if (destinations.console && destinations.console.enable) {
-        logger.add(winston.transports.Console, {
-            level: destinations.console.level,
-            formatter,
-        })
-    }
+  if (destinations.console && destinations.console.enable) {
+    logger.add(winston.transports.Console, {
+      level: destinations.console.level,
+      formatter
+    })
+  }
 
-    if (destinations.files && Array.isArray(destinations.files)) {
-        const baseDir = cfg.baseDir
+  if (destinations.files && Array.isArray(destinations.files)) {
+    const baseDir = cfg.baseDir
 
-        destinations.files.forEach(f => {
-            const filename = path.resolve(baseDir, f.name)
+    destinations.files.forEach(f => {
+      const filename = path.resolve(baseDir, f.name)
 
-            logger.add(winston.transports.File, {
-                filename,
-                formatter,
-                level: f.level,
-                name: filename, // winston needs a unique name for each transport
-                json: false,
-            })
-        })
-    }
+      logger.add(winston.transports.File, {
+        filename, formatter,
+        level: f.level,
+        name: filename, // winston needs a unique name for each transport
+        json: false
+      })
+    })
+  }
 
-    return logger
+  return logger
 }
 
 module.exports = {
-    createLogger,
-    formatter,
+  createLogger,
+  formatter
 }
