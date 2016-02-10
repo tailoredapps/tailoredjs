@@ -1,6 +1,6 @@
 {
   "name": "tailored.js",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Utility library for tailored apps backends",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,9 @@
   "author": "Michael Smesnik",
   "license": "ISC",
   "dependencies": {
+    "http-errors": "^1.4.0",
     "moment": "^2.10.6",
+    "request-promise": "^2.0.0",
     "winston": "^2.1.1"
   }
 }
