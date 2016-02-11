@@ -3,6 +3,8 @@
 import createError from 'http-errors'
 import request from 'request-promise'
 
+const defaultTimeout = 60 * 1000
+
 /**
  * Simple Promise based wrapper class for the "request" package.
  * Also converts timeout errors into 504 Gateway Timeout.
@@ -17,7 +19,7 @@ export default class HttpRequest {
    */
   constructor (opts) {
     this.opts = opts
-    this.defaultTimeout = 60 // Sensible default value, can be overridden by simply extending this class
+    this.defaultTimeout = defaultTimeout // Sensible default value, can be overridden by simply extending this class
   }
 
   get requestOptions () {
