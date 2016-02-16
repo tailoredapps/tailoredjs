@@ -88,18 +88,27 @@ class DDoSProtection {
   }
 
   static expressDoS (req, res, next) {
-    DDoSProtection.getInstance().handleDoS(req.uniqueDoS || `${req.headers[ 'x-forwarded-for' ] || req.connection.remoteAddress}#${req.headers[ 'user-agent' ]}`)
+    DDoSProtection.getInstance().handleDoS(req.uniqueDoS || DDoSProtection.createUnique(req))
     next()
   }
 
   static *koaDoS (next) {
-    DDoSProtection.getInstance().handleDoS(this.uniqueDoS || `${this.request.ip}#${this.request.headers[ 'user-agent' ]}`)
+    DDoSProtection.getInstance().handleDoS(this.uniqueDoS || DDoSProtection.createUnique(this.request))
     yield next
   }
 
   static async koa2DoS (ctx, next) {
-    DDoSProtection.getInstance().handleDoS(ctx.uniqueDoS || `${ctx.request.ip}#${ctx.request.headers[ 'user-agent' ]}`)
+    DDoSProtection.getInstance().handleDoS(ctx.uniqueDoS || DDoSProtection.createUnique(ctx.request))
     await next()
+  }
+
+  /**
+   * Automatically create an uinique identifier for the current client
+   * @param req
+   * @returns {*}
+   */
+  static createUnique (req) {
+    return `${req.ip || req.headers[ 'x-forwarded-for' ] || req.connection.remoteAddress}#${req.headers[ 'user-agent' ]}`
   }
 
   /**
