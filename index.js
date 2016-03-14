@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.util = exports.getLogger = exports.HttpRequest = exports.DDoSProtection = undefined;
+exports.util = exports.createLogger = exports.HttpRequest = exports.DDoSProtection = undefined;
 
 var _ddosProtection = require('./ddos-protection');
 
@@ -27,5 +27,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.DDoSProtection = _ddosProtection2.default;
 exports.HttpRequest = _httpRequest2.default;
-exports.getLogger = _logger2.default;
+exports.createLogger = _logger2.default;
 exports.util = util;
