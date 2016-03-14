@@ -8,6 +8,7 @@
 'use strict'
 
 // imports
+import 'babel-polyfill'
 import moment from 'moment'
 import HttpErrors from 'http-errors'
 
