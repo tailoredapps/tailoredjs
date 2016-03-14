@@ -54,6 +54,4 @@ function createLogger (cfg) {
 }
 
 export default createLogger
-// Named export for backwards compat reasons
-export {createLogger}
-export {formatter}
+export { formatter }

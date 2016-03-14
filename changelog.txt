@@ -1,0 +1,4 @@
+2016-03-14 - v1.0.0
+-------------------
+* ms: [SEMVER_MAJOR] Restructured exports: logger no longer exports getLogger as a named export, index.js is now the
+  package's entry point and exports all default exports of all other modules
