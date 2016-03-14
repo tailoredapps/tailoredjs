@@ -14,18 +14,17 @@ exports.registerExitListeners = registerExitListeners;
 function registerExitListeners(logger) {
   var moduleName = arguments.length <= 1 || arguments[1] === undefined ? 'module' : arguments[1];
 
-  process.on('SIGTERM', function () {
-    logger.verbose('------ ' + module + ' exiting via SIGTERM ------');
-    process.exit();
-  });
-
-  process.on('SIGINT', function () {
-    logger.verbose('------ ' + module + ' exiting via SIGINT ------');
-    process.exit();
-  });
+  function getListener(sig) {
+    return function () {
+      logger.verbose('---- ' + moduleName + ' exiting via ' + sig + ' ----');
+      process.exit();
+    };
+  }
+  process.on('SIGTERM', getListener('SIGTERM'));
+  process.on('SIGINT', getListener('SIGINT'));
 
   process.on('exit', function (code) {
-    logger.info('++++++ ' + module + ' exiting with code ' + code + ' ++++++');
+    logger.info('++++ ' + moduleName + ' exiting with code ' + code + ' ++++');
   });
 
   logger.debug('Exit listeners registered.');

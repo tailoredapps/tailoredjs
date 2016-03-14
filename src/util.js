@@ -7,18 +7,17 @@
  * @param moduleName
  */
 export function registerExitListeners (logger, moduleName = 'module') {
-  process.on('SIGTERM', () => {
-    logger.verbose(`------ ${module} exiting via SIGTERM ------`)
-    process.exit()
-  })
+  function getListener (sig) {
+    return () => {
+      logger.verbose(`---- ${moduleName} exiting via ${sig} ----`)
+      process.exit()
+    }
+  }
+  process.on('SIGTERM', getListener('SIGTERM'))
+  process.on('SIGINT', getListener('SIGINT'))
 
-  process.on('SIGINT', () => {
-    logger.verbose(`------ ${module} exiting via SIGINT ------`)
-    process.exit()
-  })
-
-  process.on('exit', code => {
-    logger.info(`++++++ ${module} exiting with code ${code} ++++++`)
+  process.on('exit', (code) => {
+    logger.info(`++++ ${moduleName} exiting with code ${code} ++++`)
   })
 
   logger.debug('Exit listeners registered.')
