@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.registerExitListeners = registerExitListeners;
+exports.getDuration = getDuration;
 function registerExitListeners(logger) {
   var moduleName = arguments.length <= 1 || arguments[1] === undefined ? 'module' : arguments[1];
 
@@ -28,4 +29,14 @@ function registerExitListeners(logger) {
   });
 
   logger.debug('Exit listeners registered.');
+}
+
+/**
+ * Returns the difference between two Date objects in seconds - will instantiate a new Date object if no finish parameter is provided.
+ *
+ * @param start
+ * @param finish
+ */
+function getDuration(start, finish) {
+  return ((finish || new Date()) - start) / 1000;
 }

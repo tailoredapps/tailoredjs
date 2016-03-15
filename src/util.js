@@ -22,3 +22,13 @@ export function registerExitListeners (logger, moduleName = 'module') {
 
   logger.debug('Exit listeners registered.')
 }
+
+/**
+ * Returns the difference between two Date objects in seconds - will instantiate a new Date object if no finish parameter is provided.
+ *
+ * @param start
+ * @param finish
+ */
+export function getDuration (start, finish) {
+  return ((finish || new Date()) - start) / 1000
+}
