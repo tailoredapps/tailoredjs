@@ -1,10 +1,10 @@
 {
   "name": "tailored.js",
   "version": "1.0.5",
-  "description": "Various utility library for tailored apps backends (propably not very useful for anyone else)",
+  "description": "A small library providing various utility functions used in tailored apps backends (propably not very useful for anyone else)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --require test/util/babel-register"
   },
   "repository": {
     "type": "git",
