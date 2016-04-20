@@ -48,6 +48,7 @@ function createLogger(cfg) {
   if (destinations.console && destinations.console.enable) {
     logger.add(_winston2.default.transports.Console, {
       level: destinations.console.level,
+      stderrLevels: ['error'],
       formatter: formatter
     });
   }
