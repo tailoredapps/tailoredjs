@@ -1,6 +1,6 @@
 {
   "name": "tailored.js",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A small library providing various utility functions used in tailored apps backends (propably not very useful for anyone else)",
   "main": "index.js",
   "scripts": {
