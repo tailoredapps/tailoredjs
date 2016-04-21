@@ -39,7 +39,7 @@ function createLogger (cfg) {
   if (destinations.files && Array.isArray(destinations.files)) {
     const baseDir = cfg.baseDir
 
-    destinations.files.forEach(f => {
+    destinations.files.forEach((f) => {
       const filename = path.resolve(baseDir, f.name)
 
       logger.add(winston.transports.File, {

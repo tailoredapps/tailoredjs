@@ -147,7 +147,11 @@ var DDoSProtection = function () {
       var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
       var msgs = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-      return singleton = singleton || new DDoSProtection(opts, msgs);
+      if (!singleton) {
+        singleton = new DDoSProtection(opts, msgs);
+      }
+
+      return singleton;
     }
   }, {
     key: 'expressDoS',

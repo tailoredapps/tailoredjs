@@ -73,3 +73,14 @@ export function replaceTokens (str, replacements, tokenStart = '{', tokenEnd = '
     return part
   }).join('')
 }
+
+/**
+ * The simplest of utility functions - will throw an error if NODE_ENV is not set
+ *
+ * @param errorMessage
+ */
+export function requireNodeEnv (errorMessage = 'NODE_ENV environment variable is not set.') {
+  if (!process.env.NODE_ENV) {
+    throw new Error(errorMessage)
+  }
+}

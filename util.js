@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.registerExitListeners = registerExitListeners;
 exports.getDuration = getDuration;
 exports.replaceTokens = replaceTokens;
+exports.requireNodeEnv = requireNodeEnv;
 function registerExitListeners(logger) {
   var moduleName = arguments.length <= 1 || arguments[1] === undefined ? 'module' : arguments[1];
 
@@ -84,4 +85,17 @@ function replaceTokens(str, replacements) {
 
     return part;
   }).join('');
+}
+
+/**
+ * The simplest of utility functions - will throw an error if NODE_ENV is not set
+ *
+ * @param errorMessage
+ */
+function requireNodeEnv() {
+  var errorMessage = arguments.length <= 0 || arguments[0] === undefined ? 'NODE_ENV environment variable is not set.' : arguments[0];
+
+  if (!process.env.NODE_ENV) {
+    throw new Error(errorMessage);
+  }
 }

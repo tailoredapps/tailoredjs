@@ -46,6 +46,6 @@ export default class HttpRequest {
   send () {
     return request(this.requestOptions)
     // Throw a proper 504 error when the remote backend times out
-      .catch(error => Promise.reject(error.cause && error.cause.code === 'ETIMEDOUT' ? createError(504) : error))
+      .catch((error) => Promise.reject(error.cause && error.cause.code === 'ETIMEDOUT' ? createError(504) : error))
   }
 }

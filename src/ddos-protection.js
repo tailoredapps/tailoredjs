@@ -58,7 +58,11 @@ class DDoSProtection {
    * @returns {*|DDoSProtection}
    */
   static getInstance (opts = {}, msgs = {}) {
-    return singleton = singleton || new DDoSProtection(opts, msgs)
+    if (!singleton) {
+      singleton = new DDoSProtection(opts, msgs)
+    }
+
+    return singleton
   }
 
   /**
@@ -93,7 +97,7 @@ class DDoSProtection {
     next()
   }
 
-  static *koaDoS (next) {
+  static * koaDoS (next) {
     DDoSProtection.getInstance().handleDoS(this.uniqueDoS || DDoSProtection.createUnique(this.request))
     yield next
   }
@@ -136,4 +140,4 @@ class DDoSProtection {
 
 // exports
 export default DDoSProtection
-export {DDoSProtection}
+export { DDoSProtection }
