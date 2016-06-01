@@ -49,19 +49,19 @@ export function getErrorHandlerMiddleware (logger) {
  *
  * The basic idea here is for the router to do nothing but call a method that assigns a route specific function
  * to the request state (ctx.state.digestMethod = someAsyncFunc) - this method will subsequently be called by this
- * middleware, with request body, route params, query, headers and full request object passed in. The function is
- * expected to return an object, which will be used as the response body. If the function doesn't return anything,
- * a "204 No Content" response will automatically be created.
+ * middleware, with the koa context object passed in. The function is expected to return an object, which will be
+ * used as the response body. If the function doesn't return anything, a "204 No Content" response will automatically
+ * be created.
  *
  * Example:
  *
- * async function respond ({ someBodyProp }) {
+ * async function respond ({ request: { body: { someBodyProp } } }) {
  *   return {
  *     someResponseProp: `Request body contained ${someBodyProp}.`
  *   }
  * }
  *
- * async function deleteSomething (body, { id }) {
+ * async function deleteSomething ({ params: { id } }) {
  *   await deleteThisIdFromDatabase(id)
  * }
  *
@@ -98,7 +98,7 @@ export function getRequestDigesterMiddleware (logger, methodPropName = 'digestMe
 
     logger.debug('Calling digest method now.')
 
-    ctx.body = await digestMethod(ctx.request.body, ctx.params, ctx.query, ctx.headers, ctx)
+    ctx.body = await digestMethod(ctx)
 
     logger.debug('digest method call successful.')
 
