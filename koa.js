@@ -9,12 +9,6 @@ exports.getRequestDigesterMiddleware = getRequestDigesterMiddleware;
 
 var _util = require('./util');
 
-/**
- * Returns a request profiler middleware function for use in koa 2.x
- *
- * @param logger
- * @returns {profileRequest}
- */
 function getRequestProfilerMiddleware(logger) {
   return function profileRequest(ctx, next) {
     var requestStart, elapsed;
@@ -45,12 +39,6 @@ function getRequestProfilerMiddleware(logger) {
   };
 }
 
-/**
- * Returns an error handler middleware function for use in koa 2.x
- *
- * @param logger
- * @returns {handleError}
- */
 function getErrorHandlerMiddleware(logger) {
   return function handleError(ctx, next) {
     return regeneratorRuntime.async(function handleError$(_context2) {
@@ -84,48 +72,6 @@ function getErrorHandlerMiddleware(logger) {
   };
 }
 
-/**
- * Returns a request digester middleware function for use in koa 2.x
- *
- * The basic idea here is for the router to do nothing but call a method that assigns a route specific function
- * to the request state (ctx.state.digestMethod = someAsyncFunc) - this method will subsequently be called by this
- * middleware, with request body, route params, query, headers and full request object passed in. The function is
- * expected to return an object, which will be used as the response body. If the function doesn't return anything,
- * a "204 No Content" response will automatically be created.
- *
- * Example:
- *
- * async function respond ({ someBodyProp }) {
- *   return {
- *     someResponseProp: `Request body contained ${someBodyProp}.`
- *   }
- * }
- *
- * async function deleteSomething (body, { id }) {
- *   await deleteThisIdFromDatabase(id)
- * }
- *
- * const router = new KoaRouter()
- *
- * router.post('/foo', async function setFooDigester (ctx, next) {
- *   ctx.state.digestMethod = respond
- *
- *   await next()
- * })
- *
- * router.delete('/bar/:id', async function setBarDigester (ctx, next) {
- *   ctx.state.digestMethod = deleteThings
- *
- *   await next()
- * })
- *
- * This will generate a "200 OK" response to "POST /foo" requests with the response body containing '{ someResponseProp: "Request body contained some request body value" }'.
- * "DELETE /bar/420" will delete the item "420" and return a "204 No Content" response.
- *
- * @param logger
- * @param methodPropName
- * @returns {digestRequest}
- */
 function getRequestDigesterMiddleware(logger) {
   var methodPropName = arguments.length <= 1 || arguments[1] === undefined ? 'digestMethod' : arguments[1];
 
@@ -155,7 +101,7 @@ function getRequestDigesterMiddleware(logger) {
             logger.debug('Calling digest method now.');
 
             _context3.next = 9;
-            return regeneratorRuntime.awrap(digestMethod(ctx.request.body, ctx.params, ctx.query, ctx.headers, ctx));
+            return regeneratorRuntime.awrap(digestMethod(ctx));
 
           case 9:
             ctx.body = _context3.sent;

@@ -1,13 +1,6 @@
-/**
- * Created on 02/15/2016
- *
- * @author: Stephan Schmid (DablS)
- * @copyright DablS 2015+
- */
+
 
 'use strict';
-
-// imports
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -30,7 +23,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-// defaults
 var defaultOpts = {
   maxCounts: 20,
   maxInterval: 120,
@@ -42,17 +34,9 @@ var defaultMsgs = {
   dos: { code: 429, msg: 'detected-as-dos' }
 };
 
-// privates
 var mapDoS = new Map();
 var singleton = void 0;
 var clearance = void 0;
-
-/**
- * Contains simple DoS (Denial of Service) protection.
- * @next: If possible add more complex DDoS (Distributed Denial of Service) protection.
- *
- * @class
- */
 
 var DDoSProtection = function () {
   function DDoSProtection() {
@@ -69,12 +53,6 @@ var DDoSProtection = function () {
 
   _createClass(DDoSProtection, [{
     key: 'handleDoS',
-
-
-    /**
-     * Handle simple DoS protection
-     * @param unique
-     */
     value: function handleDoS(unique) {
       var data = null;
       if (mapDoS.has(unique)) {
@@ -99,11 +77,6 @@ var DDoSProtection = function () {
     }
   }, {
     key: 'clearance',
-
-
-    /**
-     * Interval clearance process over all maps
-     */
     value: function clearance() {
       mapDoS.forEach(function (val, key, map) {
         if (val.at < (0, _moment2.default)().utc().subtract(val.interval, 'seconds')) {
@@ -133,14 +106,6 @@ var DDoSProtection = function () {
     get: function get() {
       return this._msgs || null;
     }
-
-    /**
-     * Simple create singleton
-     * @param opts
-     * @param msgs
-     * @returns {*|DDoSProtection}
-     */
-
   }], [{
     key: 'getInstance',
     value: function getInstance() {
@@ -195,13 +160,6 @@ var DDoSProtection = function () {
         }
       }, null, this);
     }
-
-    /**
-     * Automatically create an uinique identifier for the current client
-     * @param req
-     * @returns {*}
-     */
-
   }, {
     key: 'createUnique',
     value: function createUnique(req) {
@@ -211,9 +169,6 @@ var DDoSProtection = function () {
 
   return DDoSProtection;
 }();
-
-// exports
-
 
 exports.default = DDoSProtection;
 exports.DDoSProtection = DDoSProtection;

@@ -23,19 +23,6 @@ var formatter = function formatter(opts) {
   return '[' + (0, _moment2.default)().format('YYYY-MM-DD HH:mm:ss.SSS') + '] [' + opts.level + '] ' + opts.message;
 };
 
-/**
- * Creates a new logger instance
- *
- * @param {Object} cfg Configuration object
- * @param {String} cfg.baseDir Base directory for all logfiles (optional, if file logging is disabled)
- * @param {Object} cfg.destinations Logging destinations config object
- * @param {Object} cfg.destinations.console Configuration object for console/stdout logging
- * @param {Boolean} cfg.destinations.console.enable Enable or disable stdout logging
- * @param {String} cfg.destinations.console.level Log level for stdout logs
- * @param {Array.<{name: String, level: String}>|Boolean} cfg.destinations.files Configuration for file logging - file logging is disabled entirely if this is false
- *
- * @returns {Object}
- */
 function createLogger(cfg) {
   if (!cfg) {
     cfg = {};
@@ -63,7 +50,7 @@ function createLogger(cfg) {
         logger.add(_winston2.default.transports.File, {
           filename: filename, formatter: formatter,
           level: f.level,
-          name: filename, // winston needs a unique name for each transport
+          name: filename,
           json: false
         });
       });

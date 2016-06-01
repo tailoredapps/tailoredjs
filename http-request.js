@@ -20,40 +20,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var defaultTimeout = 60 * 1000;
 
-/**
- * Simple Promise based wrapper class for the "request" package.
- * Also converts timeout errors into 504 Gateway Timeout.
- *
- * @class
- */
-
 var HttpRequest = function () {
-  /**
-   * Create a new HttpRequest instance
-   *
-   * @param {string|object} opts Options passed directly to the "request" method.
-   */
-
   function HttpRequest(opts) {
     _classCallCheck(this, HttpRequest);
 
     this.opts = opts;
-    this.defaultTimeout = defaultTimeout; // Sensible default value, can be overridden by simply extending this class
+    this.defaultTimeout = defaultTimeout;
   }
 
   _createClass(HttpRequest, [{
     key: 'send',
-
-
-    /**
-     * Sends the request.
-     *
-     * @returns {Promise}
-     */
     value: function send() {
-      return (0, _requestPromise2.default)(this.requestOptions)
-      // Throw a proper 504 error when the remote backend times out
-      .catch(function (error) {
+      return (0, _requestPromise2.default)(this.requestOptions).catch(function (error) {
         return Promise.reject(error.cause && error.cause.code === 'ETIMEDOUT' ? (0, _httpErrors2.default)(504) : error);
       });
     }
