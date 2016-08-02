@@ -4,8 +4,9 @@
   "description": "A small library providing various utility functions used in tailored apps backends (propably not very useful for anyone else)",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --require test/util/babel-register",
-    "babel:watch": "babel --no-comments src -d . --watch"
+    "babel:transpile": "babel --no-comments src -d .",
+    "babel:watch": "npm run babel:transpile -- --watch",
+    "test": "mocha --require test/util/babel-register"
   },
   "repository": {
     "type": "git",

@@ -6,19 +6,16 @@ import { getDuration } from './util'
 let taskRunning = false
 let queue = new Set()
 
-export default class AbstractTaskrunner {
-  constructor (task, interval, friendlyName = 'PeriodicTask') {
+export default class Taskrunner {
+  constructor (task, interval, logger, friendlyName = 'PeriodicTask') {
     this.task = task
     this.interval = interval
     this.friendlyName = friendlyName
 
+    this.logger = logger
     this.runCount = 0
 
     this.logger.info('++++ Registering new periodic task "%s", running every %s sec.', this.friendlyName, this.interval)
-  }
-
-  get logger () {
-    throw new Error('Classes extending AbstractTaskrunner must implement the "get logger" method.')
   }
 
   async run () {
