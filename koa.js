@@ -3,6 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 exports.getRequestProfilerMiddleware = getRequestProfilerMiddleware;
 exports.getErrorHandlerMiddleware = getErrorHandlerMiddleware;
 exports.getRequestDigesterMiddleware = getRequestDigesterMiddleware;
@@ -41,6 +44,7 @@ function getRequestProfilerMiddleware(logger) {
 
 function getErrorHandlerMiddleware(logger) {
   return function handleError(ctx, next) {
+    var message, stack;
     return regeneratorRuntime.async(function handleError$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -50,20 +54,23 @@ function getErrorHandlerMiddleware(logger) {
             return regeneratorRuntime.awrap(next());
 
           case 3:
-            _context2.next = 11;
+            _context2.next = 13;
             break;
 
           case 5:
             _context2.prev = 5;
             _context2.t0 = _context2['catch'](0);
+            message = _context2.t0.message;
+            stack = _context2.t0.stack;
 
-            logger.error(_context2.t0.message);
-            logger.debug(_context2.t0.stack);
+
+            logger.error((typeof message === 'undefined' ? 'undefined' : _typeof(message)) === 'object' ? JSON.stringify(message) : message);
+            logger.debug(stack);
 
             ctx.status = _context2.t0.status || _context2.t0.statusCode || 500;
             ctx.body = _context2.t0.message;
 
-          case 11:
+          case 13:
           case 'end':
             return _context2.stop();
         }
