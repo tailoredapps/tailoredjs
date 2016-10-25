@@ -41,7 +41,7 @@ export function getErrorHandlerMiddleware (logger) {
       logger.debug(stack)
 
       ctx.status = err.status || err.statusCode || 500
-      ctx.body = err.message
+      ctx.body = err.message || err.body
     }
   }
 }
