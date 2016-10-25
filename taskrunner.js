@@ -18,6 +18,7 @@ var queue = new Set();
 var Taskrunner = function () {
   function Taskrunner(task, interval, logger) {
     var friendlyName = arguments.length <= 3 || arguments[3] === undefined ? 'PeriodicTask' : arguments[3];
+    var logLevel = arguments.length <= 4 || arguments[4] === undefined ? 'info' : arguments[4];
 
     _classCallCheck(this, Taskrunner);
 
@@ -27,67 +28,66 @@ var Taskrunner = function () {
 
     this.logger = logger;
     this.runCount = 0;
+    this.outputLog = this.logger[logLevel].bind(this.logger);
 
-    this.logger.info('++++ Registering new periodic task "%s", running every %s sec.', this.friendlyName, this.interval);
+    this.outputLog('++++ Registering new periodic task "%s", running every %s sec.', this.friendlyName, this.interval);
   }
 
   _createClass(Taskrunner, [{
     key: 'run',
     value: function run() {
-      var logger, hadError;
+      var hadError;
       return regeneratorRuntime.async(function run$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              logger = this.logger;
-
               if (!taskRunning) {
-                _context.next = 5;
+                _context.next = 4;
                 break;
               }
 
-              logger.info('---- Queuing task "%s", task "%s" currently running.', this.friendlyName, taskRunning.friendlyName);
+              this.outputLog('---- Queuing task "%s", task "%s" currently running.', this.friendlyName, taskRunning.friendlyName);
 
               queue.add(this);
               return _context.abrupt('return');
 
-            case 5:
+            case 4:
 
               taskRunning = this;
 
               this.runCount++;
               this._startTime = new Date();
 
-              logger.info('>>>> Running periodic task "%s". Run number %s.', this.friendlyName, this.runCount);
+              this.outputLog('>>>> Running periodic task "%s". Run number %s.', this.friendlyName, this.runCount);
 
               hadError = false;
-              _context.prev = 10;
-              _context.next = 13;
+              _context.prev = 9;
+              _context.next = 12;
               return regeneratorRuntime.awrap(this.task());
 
-            case 13:
-              _context.next = 20;
+            case 12:
+              _context.next = 19;
               break;
 
-            case 15:
-              _context.prev = 15;
-              _context.t0 = _context['catch'](10);
+            case 14:
+              _context.prev = 14;
+              _context.t0 = _context['catch'](9);
 
-              logger.error('Error while running periodic task "%s": %s.', this.friendlyName, _context.t0.message);
-              logger.debug(_context.t0.stack);
+              this.logger.error('Error while running periodic task "%s": %s.', this.friendlyName, _context.t0.message);
+              this.logger.debug(_context.t0.stack);
 
               hadError = true;
 
-            case 20:
+            case 19:
 
               this.scheduleNextRun(hadError ? 5 : null, hadError);
 
-            case 21:
+            case 20:
             case 'end':
               return _context.stop();
           }
         }
-      }, null, this, [[10, 15]]);
+      }, null, this, [[9, 14]]);
     }
   }, {
     key: 'scheduleNextRun',
@@ -99,7 +99,7 @@ var Taskrunner = function () {
       var elapsed = (0, _util.getDuration)(this._startTime, now);
       var timeout = overrideTimeout || this.interval;
 
-      this.logger.info('>>>> Periodic task "%s" run #%s %s (took %s sec). Running again in %s sec.', this.friendlyName, this.runCount, hadError ? 'aborted' : 'completed', elapsed, timeout);
+      this.outputLog('>>>> Periodic task "%s" run #%s %s (took %s sec). Running again in %s sec.', this.friendlyName, this.runCount, hadError ? 'aborted' : 'completed', elapsed, timeout);
 
       setTimeout(this.run.bind(this), timeout * 1000);
 
