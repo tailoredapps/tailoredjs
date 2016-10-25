@@ -44,7 +44,7 @@ function getRequestProfilerMiddleware(logger) {
 
 function getErrorHandlerMiddleware(logger) {
   return function handleError(ctx, next) {
-    var message, stack;
+    var message, body, stack, response;
     return regeneratorRuntime.async(function handleError$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -54,23 +54,24 @@ function getErrorHandlerMiddleware(logger) {
             return regeneratorRuntime.awrap(next());
 
           case 3:
-            _context2.next = 13;
+            _context2.next = 15;
             break;
 
           case 5:
             _context2.prev = 5;
             _context2.t0 = _context2['catch'](0);
             message = _context2.t0.message;
+            body = _context2.t0.body;
             stack = _context2.t0.stack;
+            response = message || body;
 
-
-            logger.error((typeof message === 'undefined' ? 'undefined' : _typeof(message)) === 'object' ? JSON.stringify(message) : message);
+            logger.error((typeof response === 'undefined' ? 'undefined' : _typeof(response)) === 'object' ? JSON.stringify(response) : response);
             logger.debug(stack);
 
             ctx.status = _context2.t0.status || _context2.t0.statusCode || 500;
-            ctx.body = _context2.t0.message || _context2.t0.body;
+            ctx.body = response;
 
-          case 13:
+          case 15:
           case 'end':
             return _context2.stop();
         }
