@@ -68,7 +68,7 @@ function getErrorHandlerMiddleware(logger) {
             logger.debug(stack);
 
             ctx.status = _context2.t0.status || _context2.t0.statusCode || 500;
-            ctx.body = _context2.t0.message;
+            ctx.body = _context2.t0.message || _context2.t0.body;
 
           case 13:
           case 'end':
