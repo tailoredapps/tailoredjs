@@ -35,8 +35,10 @@ export function getErrorHandlerMiddleware (logger) {
     try {
       await next()
     } catch (err) {
-      logger.error(err.message)
-      logger.debug(err.stack)
+      const { message, stack } = err
+
+      logger.error(typeof message === 'object' ? JSON.stringify(message) : message)
+      logger.debug(stack)
 
       ctx.status = err.status || err.statusCode || 500
       ctx.body = err.message
