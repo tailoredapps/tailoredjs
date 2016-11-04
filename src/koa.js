@@ -26,18 +26,26 @@ export function getRequestProfilerMiddleware (logger) {
 
 /**
  * Returns an error handler middleware function for use in koa 2.x
+ * This function requires a logger instance being passed to it, and optionally supports modifying the error
+ * message via a passed modifyMessage function, which will recieve the error message and the koa context as parameters.
+ *
+ * Contrived example:
+ * app.use(getErrorHandlerMiddleware(myLoggerInstance, (message, ctx) => `${ctx.status} ERROR: ${message}`))
  *
  * @param logger
+ * @param modifyMessage
  * @returns {handleError}
  */
-export function getErrorHandlerMiddleware (logger) {
+export function getErrorHandlerMiddleware (logger, modifyMessage) {
   return async function handleError (ctx, next) {
     try {
       await next()
     } catch (err) {
       const { message, body, stack } = err
 
-      const response = message || body
+      const content = message || body
+      const response = modifyMessage ? modifyMessage(content, ctx) : content
+
       logger.error(typeof response === 'object' ? JSON.stringify(response) : response)
       logger.debug(stack)
 
