@@ -42,9 +42,9 @@ function getRequestProfilerMiddleware(logger) {
   };
 }
 
-function getErrorHandlerMiddleware(logger) {
+function getErrorHandlerMiddleware(logger, modifyMessage) {
   return function handleError(ctx, next) {
-    var message, body, stack, response;
+    var message, body, stack, content, response;
     return regeneratorRuntime.async(function handleError$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -54,7 +54,7 @@ function getErrorHandlerMiddleware(logger) {
             return regeneratorRuntime.awrap(next());
 
           case 3:
-            _context2.next = 15;
+            _context2.next = 16;
             break;
 
           case 5:
@@ -63,7 +63,9 @@ function getErrorHandlerMiddleware(logger) {
             message = _context2.t0.message;
             body = _context2.t0.body;
             stack = _context2.t0.stack;
-            response = message || body;
+            content = message || body;
+            response = modifyMessage ? modifyMessage(content, ctx) : content;
+
 
             logger.error((typeof response === 'undefined' ? 'undefined' : _typeof(response)) === 'object' ? JSON.stringify(response) : response);
             logger.debug(stack);
@@ -71,7 +73,7 @@ function getErrorHandlerMiddleware(logger) {
             ctx.status = _context2.t0.status || _context2.t0.statusCode || 500;
             ctx.body = response;
 
-          case 15:
+          case 16:
           case 'end':
             return _context2.stop();
         }
