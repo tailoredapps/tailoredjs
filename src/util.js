@@ -84,3 +84,19 @@ export function requireNodeEnv (errorMessage = 'NODE_ENV environment variable is
     throw new Error(errorMessage)
   }
 }
+
+/**
+ * Adjusts a configured port by adding the value of an environment variable to it, if that variable is set
+ *
+ * Can be used to dynamically adjust the port based on app instance
+ *
+ * @param port
+ * @param envVarName
+ * @returns {*}
+ */
+export function getAdjustedPort (port, envVarName = 'NODE_APP_INSTANCE') {
+  const portNum = parseInt(port, 10)
+  const add = parseInt(process.env[envVarName])
+
+  return isNaN(add) ? portNum : portNum + add
+}
