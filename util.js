@@ -7,6 +7,7 @@ exports.registerExitListeners = registerExitListeners;
 exports.getDuration = getDuration;
 exports.replaceTokens = replaceTokens;
 exports.requireNodeEnv = requireNodeEnv;
+exports.getAdjustedPort = getAdjustedPort;
 function registerExitListeners(logger) {
   var moduleName = arguments.length <= 1 || arguments[1] === undefined ? 'module' : arguments[1];
 
@@ -53,4 +54,13 @@ function requireNodeEnv() {
   if (!process.env.NODE_ENV) {
     throw new Error(errorMessage);
   }
+}
+
+function getAdjustedPort(port) {
+  var envVarName = arguments.length <= 1 || arguments[1] === undefined ? 'NODE_APP_INSTANCE' : arguments[1];
+
+  var portNum = parseInt(port, 10);
+  var add = parseInt(process.env[envVarName]);
+
+  return isNaN(add) ? portNum : portNum + add;
 }
