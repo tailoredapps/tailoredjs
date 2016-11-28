@@ -28,7 +28,7 @@ var Taskrunner = function () {
 
     this.logger = logger;
     this.runCount = 0;
-    this.outputLog = this.logger[logLevel].bind(this.logger);
+    this.outputLog = logger && logLevel ? this.logger[logLevel].bind(this.logger) : function () {};
 
     this.outputLog('++++ Registering new periodic task "%s", running every %s sec.', this.friendlyName, this.interval);
   }
@@ -122,9 +122,7 @@ var Taskrunner = function () {
     }
   }, {
     key: 'saveStats',
-    value: function saveStats(stats) {
-      this.logger.debug('"saveStats" method not implemented in class %s.', this.constructor.name);
-    }
+    value: function saveStats(stats) {}
   }]);
 
   return Taskrunner;
