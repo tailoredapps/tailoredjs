@@ -14,7 +14,7 @@ export default class Taskrunner {
 
     this.logger = logger
     this.runCount = 0
-    this.outputLog = this.logger[logLevel].bind(this.logger)
+    this.outputLog = logger && logLevel ? this.logger[logLevel].bind(this.logger) : function () { }
 
     this.outputLog('++++ Registering new periodic task "%s", running every %s sec.', this.friendlyName, this.interval)
   }
@@ -75,7 +75,6 @@ export default class Taskrunner {
     })
   }
 
-  saveStats (stats) {
-    this.logger.debug('"saveStats" method not implemented in class %s.', this.constructor.name)
-  }
+  // This method can be implemented by chaild classes to save task statistics (e.g. elapsed time, etc)
+  saveStats (stats) { }
 }
