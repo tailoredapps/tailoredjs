@@ -9,7 +9,7 @@ exports.replaceTokens = replaceTokens;
 exports.requireNodeEnv = requireNodeEnv;
 exports.getAdjustedPort = getAdjustedPort;
 function registerExitListeners(logger) {
-  var moduleName = arguments.length <= 1 || arguments[1] === undefined ? 'module' : arguments[1];
+  var moduleName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'module';
 
   function getListener(sig) {
     return function () {
@@ -32,8 +32,8 @@ function getDuration(start, finish) {
 }
 
 function replaceTokens(str, replacements) {
-  var tokenStart = arguments.length <= 2 || arguments[2] === undefined ? '{' : arguments[2];
-  var tokenEnd = arguments.length <= 3 || arguments[3] === undefined ? '}' : arguments[3];
+  var tokenStart = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '{';
+  var tokenEnd = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '}';
 
   return str.split(/(\{[a-z]+\})/i).map(function (part) {
     if (part.startsWith(tokenStart) && part.endsWith(tokenEnd)) {
@@ -49,7 +49,7 @@ function replaceTokens(str, replacements) {
 }
 
 function requireNodeEnv() {
-  var errorMessage = arguments.length <= 0 || arguments[0] === undefined ? 'NODE_ENV environment variable is not set.' : arguments[0];
+  var errorMessage = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'NODE_ENV environment variable is not set.';
 
   if (!process.env.NODE_ENV) {
     throw new Error(errorMessage);
@@ -57,7 +57,7 @@ function requireNodeEnv() {
 }
 
 function getAdjustedPort(port) {
-  var envVarName = arguments.length <= 1 || arguments[1] === undefined ? 'NODE_APP_INSTANCE' : arguments[1];
+  var envVarName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'NODE_APP_INSTANCE';
 
   var portNum = parseInt(port, 10);
   var add = parseInt(process.env[envVarName]);

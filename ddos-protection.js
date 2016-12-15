@@ -40,8 +40,8 @@ var clearance = void 0;
 
 var DDoSProtection = function () {
   function DDoSProtection() {
-    var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-    var msgs = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var msgs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     _classCallCheck(this, DDoSProtection);
 
@@ -109,8 +109,8 @@ var DDoSProtection = function () {
   }], [{
     key: 'getInstance',
     value: function getInstance() {
-      var opts = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-      var msgs = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var msgs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
       if (!singleton) {
         singleton = new DDoSProtection(opts, msgs);

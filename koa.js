@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.getRequestProfilerMiddleware = getRequestProfilerMiddleware;
 exports.getErrorHandlerMiddleware = getErrorHandlerMiddleware;
@@ -54,15 +54,13 @@ function getErrorHandlerMiddleware(logger, modifyMessage) {
             return regeneratorRuntime.awrap(next());
 
           case 3:
-            _context2.next = 16;
+            _context2.next = 14;
             break;
 
           case 5:
             _context2.prev = 5;
             _context2.t0 = _context2['catch'](0);
-            message = _context2.t0.message;
-            body = _context2.t0.body;
-            stack = _context2.t0.stack;
+            message = _context2.t0.message, body = _context2.t0.body, stack = _context2.t0.stack;
             content = message || body;
             response = modifyMessage ? modifyMessage(content, ctx) : content;
 
@@ -73,7 +71,7 @@ function getErrorHandlerMiddleware(logger, modifyMessage) {
             ctx.status = _context2.t0.status || _context2.t0.statusCode || 500;
             ctx.body = response;
 
-          case 16:
+          case 14:
           case 'end':
             return _context2.stop();
         }
@@ -83,7 +81,7 @@ function getErrorHandlerMiddleware(logger, modifyMessage) {
 }
 
 function getRequestDigesterMiddleware(logger) {
-  var methodPropName = arguments.length <= 1 || arguments[1] === undefined ? 'digestMethod' : arguments[1];
+  var methodPropName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'digestMethod';
 
   return function digestRequest(ctx, next) {
     var digestMethod;

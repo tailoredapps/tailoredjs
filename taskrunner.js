@@ -17,8 +17,8 @@ var queue = new Set();
 
 var Taskrunner = function () {
   function Taskrunner(task, interval, logger) {
-    var friendlyName = arguments.length <= 3 || arguments[3] === undefined ? 'PeriodicTask' : arguments[3];
-    var logLevel = arguments.length <= 4 || arguments[4] === undefined ? 'info' : arguments[4];
+    var friendlyName = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'PeriodicTask';
+    var logLevel = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'info';
 
     _classCallCheck(this, Taskrunner);
 
@@ -92,8 +92,8 @@ var Taskrunner = function () {
   }, {
     key: 'scheduleNextRun',
     value: function scheduleNextRun() {
-      var overrideTimeout = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
-      var hadError = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
+      var overrideTimeout = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var hadError = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
       var now = new Date();
       var elapsed = (0, _util.getDuration)(this._startTime, now);
