@@ -6,7 +6,7 @@ import * as u from '../util'
 
 describe('util module', function () {
   describe('replaceTokens', function () {
-    it('should correctly replace tokens in a string', function () {
+    it('replaces tokens in a string', function () {
       const source = 'foo {replaced} {notReplaced}'
       const replace = { replaced: 'bar', ignoredProp: 'dummy' }
 
