@@ -1,9 +1,11 @@
 import DDoSProtection from './ddos-protection'
-import HttpRequest from './http-request'
 import createLogger from './logger'
+import Taskrunner from './taskrunner'
 import * as util from './util'
+import * as koa from './koa'
 
 export { DDoSProtection }
-export { HttpRequest }
+export { Taskrunner }
 export { createLogger }
 export { util }
+export { koa }
