@@ -97,7 +97,9 @@ function getConnector(_ref) {
     return getRequestSpec.apply(undefined, [baseUrl].concat(args));
   };
 
-  return function _callee(endpointId, params) {
+  return function _callee(endpointId) {
+    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var extraRequestOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var requestOptions;
     return regeneratorRuntime.async(function _callee$(_context) {
       while (1) {
@@ -111,7 +113,7 @@ function getConnector(_ref) {
             throw new Error('Invalid endpoint id "' + endpointId + '" provided.');
 
           case 2:
-            requestOptions = getSpec(endpoints.get(endpointId), params);
+            requestOptions = getSpec(_extends({}, endpoints.get(endpointId), extraRequestOptions), params);
             _context.next = 5;
             return regeneratorRuntime.awrap(requestFn(requestOptions));
 
