@@ -99,12 +99,12 @@ export default function getConnector ({ baseUrl, endpoints: endpointSpecs, logge
   const endpoints = new Map(endpointSpecs.map(({ id, route, method, ...props }) => [ id, { route, method: method.toLowerCase(), doReplace: route.includes('{'), ...props } ]))
   const getSpec = (...args) => getRequestSpec(baseUrl, ...args)
 
-  return async (endpointId, params) => {
+  return async (endpointId, params = { }, extraRequestOptions = { }) => {
     if (!endpointId || !endpoints.has(endpointId)) {
       throw new Error(`Invalid endpoint id "${endpointId}" provided.`)
     }
 
-    const requestOptions = getSpec(endpoints.get(endpointId), params)
+    const requestOptions = getSpec({ ...endpoints.get(endpointId), ...extraRequestOptions }, params)
 
     return await requestFn(requestOptions)
   }

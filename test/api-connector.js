@@ -89,4 +89,29 @@ describe('api connector', function () {
       expect(spec.body).to.deep.equal({ a: 'b', c: 'd' })
     })
   })
+
+  describe('request options', function () {
+    const endpoints = [
+      { id: 'get_foo', route: '/foo', method: 'get', extra: 'prop' }
+    ]
+    const getMockRequestFn = (expectedKey, expectedValue) => async (opts) => {
+      expect(opts).to.be.an('object')
+      expect(opts).to.contain.keys([ expectedKey ])
+      expect(opts[expectedKey]).to.equal(expectedValue)
+    }
+
+    it('adds extra request options from endpoint specs', async function () {
+      const requestFn = getMockRequestFn('extra', 'prop')
+      const mockRequest = getConnector({ baseUrl: 'foo', endpoints, requestFn })
+
+      await mockRequest('get_foo')
+    })
+
+    it('adds extra request options on a per-call basis', async function () {
+      const requestFn = getMockRequestFn('single', 'prop')
+      const mockRequest = getConnector({ baseUrl: 'foo', endpoints, requestFn })
+
+      await mockRequest('get_foo', { }, { single: 'prop' })
+    })
+  })
 })
