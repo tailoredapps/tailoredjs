@@ -91,27 +91,36 @@ describe('api connector', function () {
   })
 
   describe('request options', function () {
+    const baseUrl = 'foo'
     const endpoints = [
-      { id: 'get_foo', route: '/foo', method: 'get', extra: 'prop' }
+      { id: 'get_foo', route: '/foo', method: 'get', extra: 'prop', deep: { endpoint: true } }
     ]
     const getMockRequestFn = (expectedKey, expectedValue) => async (opts) => {
       expect(opts).to.be.an('object')
       expect(opts).to.contain.keys([ expectedKey ])
-      expect(opts[expectedKey]).to.equal(expectedValue)
+      expect(opts[expectedKey]).to.deep.equal(expectedValue)
     }
+    const getMockConnector = (requestFn) => getConnector({ baseUrl, endpoints, requestFn })
 
     it('adds extra request options from endpoint specs', async function () {
       const requestFn = getMockRequestFn('extra', 'prop')
-      const mockRequest = getConnector({ baseUrl: 'foo', endpoints, requestFn })
+      const mockRequest = getMockConnector(requestFn)
 
       await mockRequest('get_foo')
     })
 
     it('adds extra request options on a per-call basis', async function () {
       const requestFn = getMockRequestFn('single', 'prop')
-      const mockRequest = getConnector({ baseUrl: 'foo', endpoints, requestFn })
+      const mockRequest = getMockConnector(requestFn)
 
       await mockRequest('get_foo', { }, { single: 'prop' })
+    })
+
+    it('deepmerges endpoint and per-call extra options', async function () {
+      const requestFn = getMockRequestFn('deep', { endpoint: true, req: true })
+      const mockRequest = getMockConnector(requestFn)
+
+      await mockRequest('get_foo', { }, { deep: { req: true } })
     })
   })
 })

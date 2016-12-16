@@ -1,7 +1,9 @@
 'use strict'
 
-import { replaceTokens } from './util'
+import deepmerge from 'deepmerge'
 import request from 'request-promise'
+
+import { replaceTokens } from './util'
 
 export const METHOD_GET = 'get'
 export const METHOD_POST = 'post'
@@ -104,7 +106,7 @@ export default function getConnector ({ baseUrl, endpoints: endpointSpecs, logge
       throw new Error(`Invalid endpoint id "${endpointId}" provided.`)
     }
 
-    const requestOptions = getSpec({ ...endpoints.get(endpointId), ...extraRequestOptions }, params)
+    const requestOptions = getSpec(deepmerge(endpoints.get(endpointId), extraRequestOptions), params)
 
     return await requestFn(requestOptions)
   }
