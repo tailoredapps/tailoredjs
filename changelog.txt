@@ -1,4 +1,8 @@
-2016-12-15
+2016-12-16 - v3.2.0
+-------------------
+* ms: [SEMVER_MINOR] Add support for per-request extra options in api-connector
+
+2016-12-15 - v3.0.0
 -------------------
 * ms: [SEMVER_MAJOR] Removed deprecated http-request module
 * ms: [SEMVER_MINOR] Fixed exports from index.js
