@@ -10,11 +10,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 exports.getRequestSpec = getRequestSpec;
 exports.default = getConnector;
 
-var _util = require('./util');
+var _deepmerge = require('deepmerge');
+
+var _deepmerge2 = _interopRequireDefault(_deepmerge);
 
 var _requestPromise = require('request-promise');
 
 var _requestPromise2 = _interopRequireDefault(_requestPromise);
+
+var _util = require('./util');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -113,7 +117,7 @@ function getConnector(_ref) {
             throw new Error('Invalid endpoint id "' + endpointId + '" provided.');
 
           case 2:
-            requestOptions = getSpec(_extends({}, endpoints.get(endpointId), extraRequestOptions), params);
+            requestOptions = getSpec((0, _deepmerge2.default)(endpoints.get(endpointId), extraRequestOptions), params);
             _context.next = 5;
             return regeneratorRuntime.awrap(requestFn(requestOptions));
 
