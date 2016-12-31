@@ -8,7 +8,7 @@ import { getDuration } from './util'
  * @param logger
  * @returns {profileRequest}
  */
-export function getRequestProfilerMiddleware (logger) {
+export function requestProfiler (logger) {
   return async function profileRequest (ctx, next) {
     const requestStart = new Date()
 
@@ -36,7 +36,7 @@ export function getRequestProfilerMiddleware (logger) {
  * @param modifyMessage
  * @returns {handleError}
  */
-export function getErrorHandlerMiddleware (logger, modifyMessage) {
+export function errorHandler (logger, modifyMessage) {
   return async function handleError (ctx, next) {
     try {
       await next()
@@ -97,7 +97,7 @@ export function getErrorHandlerMiddleware (logger, modifyMessage) {
  * @param methodPropName
  * @returns {digestRequest}
  */
-export function getRequestDigesterMiddleware (logger, methodPropName = 'digestMethod') {
+export function requestDigester (logger, methodPropName = 'digestMethod') {
   return async function digestRequest (ctx, next) {
     const digestMethod = ctx.state[methodPropName]
 
