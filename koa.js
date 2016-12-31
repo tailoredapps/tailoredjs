@@ -6,13 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-exports.getRequestProfilerMiddleware = getRequestProfilerMiddleware;
-exports.getErrorHandlerMiddleware = getErrorHandlerMiddleware;
-exports.getRequestDigesterMiddleware = getRequestDigesterMiddleware;
+exports.requestProfiler = requestProfiler;
+exports.errorHandler = errorHandler;
+exports.requestDigester = requestDigester;
 
 var _util = require('./util');
 
-function getRequestProfilerMiddleware(logger) {
+function requestProfiler(logger) {
   return function profileRequest(ctx, next) {
     var requestStart, elapsed;
     return regeneratorRuntime.async(function profileRequest$(_context) {
@@ -42,7 +42,7 @@ function getRequestProfilerMiddleware(logger) {
   };
 }
 
-function getErrorHandlerMiddleware(logger, modifyMessage) {
+function errorHandler(logger, modifyMessage) {
   return function handleError(ctx, next) {
     var message, body, stack, content, response;
     return regeneratorRuntime.async(function handleError$(_context2) {
@@ -80,7 +80,7 @@ function getErrorHandlerMiddleware(logger, modifyMessage) {
   };
 }
 
-function getRequestDigesterMiddleware(logger) {
+function requestDigester(logger) {
   var methodPropName = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'digestMethod';
 
   return function digestRequest(ctx, next) {
