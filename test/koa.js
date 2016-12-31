@@ -16,7 +16,7 @@ describe('koa related functionality', function () {
       const fauxCtx = { status: null, body: null, mod: 'bar' }
       const noop = function () { }
 
-      const errorHandler = k.getErrorHandlerMiddleware({ error: noop, debug: noop }, modify)
+      const errorHandler = k.errorHandler({ error: noop, debug: noop }, modify)
 
       await errorHandler(fauxCtx, next)
 
