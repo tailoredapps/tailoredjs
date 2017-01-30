@@ -43,7 +43,8 @@ function createLogger (cfg) {
       const filename = path.resolve(baseDir, f.name)
 
       logger.add(winston.transports.File, {
-        filename, formatter,
+        filename,
+        formatter,
         level: f.level,
         name: filename, // winston needs a unique name for each transport
         json: false
