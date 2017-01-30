@@ -48,7 +48,8 @@ function createLogger(cfg) {
         var filename = _path2.default.resolve(baseDir, f.name);
 
         logger.add(_winston2.default.transports.File, {
-          filename: filename, formatter: formatter,
+          filename: filename,
+          formatter: formatter,
           level: f.level,
           name: filename,
           json: false
