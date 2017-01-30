@@ -61,7 +61,7 @@ function errorHandler(logger, modifyMessage) {
             _context2.prev = 5;
             _context2.t0 = _context2['catch'](0);
             message = _context2.t0.message, body = _context2.t0.body, stack = _context2.t0.stack;
-            content = message || body;
+            content = body || message;
             response = modifyMessage ? modifyMessage(content, ctx) : content;
 
 
