@@ -43,7 +43,7 @@ export function errorHandler (logger, modifyMessage) {
     } catch (err) {
       const { message, body, stack } = err
 
-      const content = message || body
+      const content = body || message
       const response = modifyMessage ? modifyMessage(content, ctx) : content
 
       logger.error(typeof response === 'object' ? JSON.stringify(response) : response)
