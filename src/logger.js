@@ -10,24 +10,21 @@ const formatter = (opts) => `[${moment().format('YYYY-MM-DD HH:mm:ss.SSS')}] [${
  * Creates a new logger instance
  *
  * @param {Object} cfg Configuration object
- * @param {Object} cfg.destinations Logging destinations config object
- * @param {Object} cfg.destinations.console Configuration object for console/stdout logging
- * @param {Boolean} cfg.destinations.console.enable Enable or disable stdout logging
- * @param {String} cfg.destinations.console.level Log level for stdout logs
- * @param {Object} cfg.destinations.files Configuration for file logging
- * @param {string} cfg.destinations.files.baseDir Base dir for log files
- * @param {Array.<{name: String, level: String}>} cfg.destinations.files.logFiles Configuration for file logging
+ * @param {String|Boolean} cfg.console Log level for console/stdout logging (set to false to disable)
+ * @param {Object} cfg.files Configuration for file logging
+ * @param {string} cfg.files.baseDir Base dir for log files
+ * @param {Array.<{name: String, level: String}>} cfg.files.logFiles Configuration for file logging
  *
  * @returns {Object}
  */
 function createLogger (cfg = { }) {
-  const { destinations: { console, files } = { } } = cfg // Destructuring here instead of in arg list to stop IDE from complaining about jsdoc not matching args
+  const { console, files } = cfg // Destructuring here instead of in arg list to stop IDE from complaining about jsdoc not matching args
 
   let logger = new winston.Logger()
 
-  if (console && console.enable) {
+  if (console) {
     logger.add(winston.transports.Console, {
-      level: console.level,
+      level: console,
       stderrLevels: [ 'error' ],
       formatter
     })
