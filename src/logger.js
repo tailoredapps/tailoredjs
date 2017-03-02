@@ -10,46 +10,45 @@ const formatter = (opts) => `[${moment().format('YYYY-MM-DD HH:mm:ss.SSS')}] [${
  * Creates a new logger instance
  *
  * @param {Object} cfg Configuration object
- * @param {String} cfg.baseDir Base directory for all logfiles (optional, if file logging is disabled)
  * @param {Object} cfg.destinations Logging destinations config object
  * @param {Object} cfg.destinations.console Configuration object for console/stdout logging
  * @param {Boolean} cfg.destinations.console.enable Enable or disable stdout logging
  * @param {String} cfg.destinations.console.level Log level for stdout logs
- * @param {Array.<{name: String, level: String}>|Boolean} cfg.destinations.files Configuration for file logging - file logging is disabled entirely if this is false
+ * @param {Object} cfg.destinations.files Configuration for file logging
+ * @param {string} cfg.destinations.files.baseDir Base dir for log files
+ * @param {Array.<{name: String, level: String}>} cfg.destinations.files.logFiles Configuration for file logging
  *
  * @returns {Object}
  */
-function createLogger (cfg) {
-  if (!cfg) {
-    cfg = {}
-  }
-
-  const destinations = cfg.destinations || {}
+function createLogger (cfg = { }) {
+  const { destinations: { console, files } = { } } = cfg // Destructuring here instead of in arg list to stop IDE from complaining about jsdoc not matching args
 
   let logger = new winston.Logger()
 
-  if (destinations.console && destinations.console.enable) {
+  if (console && console.enable) {
     logger.add(winston.transports.Console, {
-      level: destinations.console.level,
+      level: console.level,
       stderrLevels: [ 'error' ],
       formatter
     })
   }
 
-  if (destinations.files && Array.isArray(destinations.files)) {
-    const baseDir = cfg.baseDir
+  if (files) {
+    const { baseDir = '.', logFiles } = files
 
-    destinations.files.forEach((f) => {
-      const filename = path.resolve(baseDir, f.name)
+    if (Array.isArray(logFiles)) {
+      logFiles.forEach(({ name, level }) => {
+        const fullPath = path.resolve(baseDir, name)
 
-      logger.add(winston.transports.File, {
-        filename,
-        formatter,
-        level: f.level,
-        name: filename, // winston needs a unique name for each transport
-        json: false
+        logger.add(winston.transports.File, {
+          level,
+          formatter,
+          filename: fullPath,
+          name: fullPath, // winston needs a unique name for each transport
+          json: false
+        })
       })
-    })
+    }
   }
 
   return logger
