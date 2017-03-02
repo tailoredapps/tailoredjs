@@ -1,6 +1,8 @@
-2017-03-02 - v6.0.0
+2017-03-02 - v6.0.1
 -------------------
-* ms [SEMVER_MAJOR] Refactored logging configuration: baseDir for file logging now in destinations.files, list of logfiles now in destinations.files.logFiles
+* ms [SEMVER_MAJOR] Refactored logging configuration:
+  - console/stdout now a string config, removed redundant "enable" and "level" props
+  - baseDir for file logging now in cfg.files, list of logfiles now in cfg.files.logFiles
 
 2017-01-30 - v5.0.0
 -------------------
