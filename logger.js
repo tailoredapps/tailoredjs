@@ -23,38 +23,45 @@ var formatter = function formatter(opts) {
   return '[' + (0, _moment2.default)().format('YYYY-MM-DD HH:mm:ss.SSS') + '] [' + opts.level + '] ' + opts.message;
 };
 
-function createLogger(cfg) {
-  if (!cfg) {
-    cfg = {};
-  }
+function createLogger() {
+  var cfg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var console = cfg.console,
+      files = cfg.files;
 
-  var destinations = cfg.destinations || {};
 
   var logger = new _winston2.default.Logger();
 
-  if (destinations.console && destinations.console.enable) {
+  if (console) {
     logger.add(_winston2.default.transports.Console, {
-      level: destinations.console.level,
+      level: console,
       stderrLevels: ['error'],
       formatter: formatter
     });
   }
 
-  if (destinations.files && Array.isArray(destinations.files)) {
+  if (files) {
     (function () {
-      var baseDir = cfg.baseDir;
+      var _files$baseDir = files.baseDir,
+          baseDir = _files$baseDir === undefined ? '.' : _files$baseDir,
+          logFiles = files.logFiles;
 
-      destinations.files.forEach(function (f) {
-        var filename = _path2.default.resolve(baseDir, f.name);
 
-        logger.add(_winston2.default.transports.File, {
-          filename: filename,
-          formatter: formatter,
-          level: f.level,
-          name: filename,
-          json: false
+      if (Array.isArray(logFiles)) {
+        logFiles.forEach(function (_ref) {
+          var name = _ref.name,
+              level = _ref.level;
+
+          var fullPath = _path2.default.resolve(baseDir, name);
+
+          logger.add(_winston2.default.transports.File, {
+            level: level,
+            formatter: formatter,
+            filename: fullPath,
+            name: fullPath,
+            json: false
+          });
         });
-      });
+      }
     })();
   }
 
