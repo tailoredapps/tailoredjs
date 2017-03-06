@@ -1,4 +1,4 @@
-2017-03-06 - v7.0.0
+2017-03-06 - v7.0.1
 -------------------
 * ms [SEMVER_MAJOR] Removed ddos-protection module
 * ms [SEMVER_MAJOR] to determine response body, koa error handler will now evaluate an errors properties in the following order: err.body, err.error, err.message
