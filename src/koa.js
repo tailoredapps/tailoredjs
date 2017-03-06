@@ -41,9 +41,9 @@ export function errorHandler (logger, modifyMessage) {
     try {
       await next()
     } catch (err) {
-      const { message, body, stack } = err
+      const { message, error, body, stack } = err
 
-      const content = body || message
+      const content = body || error || message
       const response = modifyMessage ? modifyMessage(content, ctx) : content
 
       logger.error(typeof response === 'object' ? JSON.stringify(response) : response)
