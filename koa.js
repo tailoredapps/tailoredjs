@@ -44,7 +44,7 @@ function requestProfiler(logger) {
 
 function errorHandler(logger, modifyMessage) {
   return function handleError(ctx, next) {
-    var message, body, stack, content, response;
+    var message, error, body, stack, content, response;
     return regeneratorRuntime.async(function handleError$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -60,8 +60,8 @@ function errorHandler(logger, modifyMessage) {
           case 5:
             _context2.prev = 5;
             _context2.t0 = _context2['catch'](0);
-            message = _context2.t0.message, body = _context2.t0.body, stack = _context2.t0.stack;
-            content = body || message;
+            message = _context2.t0.message, error = _context2.t0.error, body = _context2.t0.body, stack = _context2.t0.stack;
+            content = body || error || message;
             response = modifyMessage ? modifyMessage(content, ctx) : content;
 
 
