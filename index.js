@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.koa = exports.util = exports.createLogger = exports.Taskrunner = exports.DDoSProtection = undefined;
+exports.koa = exports.util = exports.createLogger = exports.Taskrunner = exports.getConnector = undefined;
 
-var _ddosProtection = require('./ddos-protection');
+var _apiConnector = require('./api-connector');
 
-var _ddosProtection2 = _interopRequireDefault(_ddosProtection);
+var _apiConnector2 = _interopRequireDefault(_apiConnector);
 
 var _logger = require('./logger');
 
@@ -29,7 +29,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.DDoSProtection = _ddosProtection2.default;
+exports.getConnector = _apiConnector2.default;
 exports.Taskrunner = _taskrunner2.default;
 exports.createLogger = _logger2.default;
 exports.util = util;

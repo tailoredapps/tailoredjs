@@ -40,29 +40,27 @@ function createLogger() {
   }
 
   if (files) {
-    (function () {
-      var _files$baseDir = files.baseDir,
-          baseDir = _files$baseDir === undefined ? '.' : _files$baseDir,
-          logFiles = files.logFiles;
+    var _files$baseDir = files.baseDir,
+        baseDir = _files$baseDir === undefined ? '.' : _files$baseDir,
+        logFiles = files.logFiles;
 
 
-      if (Array.isArray(logFiles)) {
-        logFiles.forEach(function (_ref) {
-          var name = _ref.name,
-              level = _ref.level;
+    if (Array.isArray(logFiles)) {
+      logFiles.forEach(function (_ref) {
+        var name = _ref.name,
+            level = _ref.level;
 
-          var fullPath = _path2.default.resolve(baseDir, name);
+        var fullPath = _path2.default.resolve(baseDir, name);
 
-          logger.add(_winston2.default.transports.File, {
-            level: level,
-            formatter: formatter,
-            filename: fullPath,
-            name: fullPath,
-            json: false
-          });
+        logger.add(_winston2.default.transports.File, {
+          level: level,
+          formatter: formatter,
+          filename: fullPath,
+          name: fullPath,
+          json: false
         });
-      }
-    })();
+      });
+    }
   }
 
   return logger;

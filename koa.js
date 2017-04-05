@@ -19,11 +19,13 @@ function requestProfiler(logger) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
+            logger.debug(ctx.method + ' ' + ctx.url + ' starting');
+
             requestStart = new Date();
-            _context.next = 3;
+            _context.next = 4;
             return regeneratorRuntime.awrap(next());
 
-          case 3:
+          case 4:
             elapsed = (0, _util.getDuration)(requestStart).toFixed(4);
 
 
@@ -33,7 +35,7 @@ function requestProfiler(logger) {
               logger.info(ctx.method + ' ' + ctx.url + ' finished without error, took ' + elapsed + ' sec.');
             }
 
-          case 5:
+          case 6:
           case 'end':
             return _context.stop();
         }
