@@ -10,6 +10,8 @@ import { getDuration } from './util'
  */
 export function requestProfiler (logger) {
   return async function profileRequest (ctx, next) {
+    logger.debug(`${ctx.method} ${ctx.url} starting`)
+
     const requestStart = new Date()
 
     await next()
