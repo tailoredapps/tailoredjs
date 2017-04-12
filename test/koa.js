@@ -1,10 +1,7 @@
-'use strict'
-
 /* eslint-env mocha */
+const { expect } = require('chai')
 
-import { expect } from 'chai'
-
-import * as k from '../src/koa'
+const k = require('../lib/koa-middleware')
 
 describe('koa related functionality', function () {
   describe('error handler middleware', function () {

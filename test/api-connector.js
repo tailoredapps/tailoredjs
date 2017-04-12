@@ -1,11 +1,9 @@
-'use strict'
-
 /* eslint-env mocha */
 
-import { expect } from 'chai'
+const { expect } = require('chai')
 
-import { expectError } from './util/helpers'
-import getConnector, { getRequestSpec, METHOD_PATCH, METHOD_DELETE, METHOD_PUT, METHOD_POST, METHOD_GET } from '../api-connector'
+const { expectError } = require('./helpers')
+const { getConnector, getRequestSpec, METHOD_DELETE, METHOD_GET, METHOD_PATCH, METHOD_POST, METHOD_PUT } = require('../lib/api-connector')
 
 describe('api connector', function () {
   describe('data validation', function () {
@@ -33,7 +31,7 @@ describe('api connector', function () {
       const callApi = getConnector({ baseUrl: 'foo', endpoints: [ { id: 'one', route: '/foo', method: METHOD_GET } ], requestFn: (opts) => opts })
 
       await callApi('one')
-      await expectError(async () => await callApi('two'), Error)
+      await expectError(async () => callApi('two'), Error)
     })
   })
 
@@ -56,7 +54,7 @@ describe('api connector', function () {
 
         expect(spec).to.contain.keys('qs')
         expect(spec.qs).to.deep.equal(params)
-        expect(spec.body).to.not.be.ok
+        expect(spec.body).to.not.be.ok // eslint-disable-line no-unused-expressions
       }
     })
 
