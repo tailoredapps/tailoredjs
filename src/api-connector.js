@@ -1,5 +1,3 @@
-'use strict'
-
 import deepmerge from 'deepmerge'
 import request from 'request-promise'
 
@@ -108,6 +106,6 @@ export default function getConnector ({ baseUrl, endpoints: endpointSpecs, logge
 
     const requestOptions = getSpec(deepmerge(endpoints.get(endpointId), extraRequestOptions), params)
 
-    return await requestFn(requestOptions)
+    return requestFn(requestOptions)
   }
 }

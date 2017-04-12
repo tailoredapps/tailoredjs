@@ -106,7 +106,8 @@ export function requestDigester (logger, methodPropName = 'digestMethod') {
     if (!digestMethod) {
       logger.warn(`No "digest" method set for request ${ctx.method} ${ctx.url}.`)
 
-      return await next()
+      await next()
+      return
     }
 
     logger.debug('Calling digest method now.')
