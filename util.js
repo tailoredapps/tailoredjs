@@ -1,12 +1,10 @@
-'use strict'
-
 /**
  * Registers listeners that produce output on process termination
  *
  * @param logger
  * @param moduleName
  */
-export function registerExitListeners (logger, moduleName = 'module') {
+function registerExitListeners (logger, moduleName = 'module') {
   function getListener (sig) {
     return () => {
       logger.verbose(`---- ${moduleName} exiting via ${sig} ----`)
@@ -29,7 +27,7 @@ export function registerExitListeners (logger, moduleName = 'module') {
  * @param start
  * @param finish
  */
-export function getDuration (start, finish) {
+function getDuration (start, finish) {
   return ((finish || new Date()) - start) / 1000
 }
 
@@ -60,7 +58,7 @@ export function getDuration (start, finish) {
  * @param tokenEnd
  * @returns {string}
  */
-export function replaceTokens (str, replacements, tokenStart = '{', tokenEnd = '}') {
+function replaceTokens (str, replacements, tokenStart = '{', tokenEnd = '}') {
   return str.split(/(\{[a-z]+\})/i).map((part) => {
     if (part.startsWith(tokenStart) && part.endsWith(tokenEnd)) {
       const token = part.substring(1, part.length - 1)
@@ -79,7 +77,7 @@ export function replaceTokens (str, replacements, tokenStart = '{', tokenEnd = '
  *
  * @param errorMessage
  */
-export function requireNodeEnv (errorMessage = 'NODE_ENV environment variable is not set.') {
+function requireNodeEnv (errorMessage = 'NODE_ENV environment variable is not set.') {
   if (!process.env.NODE_ENV) {
     throw new Error(errorMessage)
   }
@@ -94,9 +92,17 @@ export function requireNodeEnv (errorMessage = 'NODE_ENV environment variable is
  * @param envVarName
  * @returns {*}
  */
-export function getAdjustedPort (port, envVarName = 'NODE_APP_INSTANCE') {
+function getAdjustedPort (port, envVarName = 'NODE_APP_INSTANCE') {
   const portNum = parseInt(port, 10)
   const add = parseInt(process.env[envVarName])
 
   return isNaN(add) ? portNum : portNum + add
+}
+
+module.exports = {
+  registerExitListeners,
+  getDuration,
+  replaceTokens,
+  requireNodeEnv,
+  getAdjustedPort
 }
