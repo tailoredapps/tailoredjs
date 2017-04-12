@@ -1,10 +1,8 @@
-'use strict'
-
-import { expect } from 'chai'
-import { BadRequest } from 'http-errors'
+const { expect } = require('chai')
+const { BadRequest } = require('http-errors')
 
 // Simple helper because expect(...).to.throw(ErrorClass) doesn't work with async functions for some reason - will fail even if ErrorClass is thrown
-export async function expectError (fn, errorType = BadRequest) {
+async function expectError (fn, errorType = BadRequest) {
   let err
 
   try {
@@ -14,4 +12,8 @@ export async function expectError (fn, errorType = BadRequest) {
   }
 
   expect(err).to.be.an.instanceof(errorType)
+}
+
+module.exports = {
+  expectError
 }
