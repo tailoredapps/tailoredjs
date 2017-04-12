@@ -1,5 +1,12 @@
 # Changelog
 
+## 2017-04-12 `v8.0.0`
+* ms `[SEMVER_MAJOR]` Reworked file structure and exports - no more default exports, all modules now use named exports only
+* ms `[SEMVER_MAJOR]` Reworked `index.js` exports
+* ms `[SEMVER_MAJOR]` Renamed `koa` module to `koa-middleware`
+* ms `[SEMVER_MAJOR]` Added `node >= 7.6.0` engine requirement to `package.json`
+* ms `[SEMVER_MINOR]` Removed all code not natively supported by node >= 7.6. This means that tailored.js sourcecode will as of now be shipped as-is, without any transpilation steps in between. Therefore, all babel related dev dependencies have been removed as well
+
 ## 2017-04-12 `v7.0.3`
 * ms `[SEMVER_PATCH]` Refactored linting dependencies
 * ms `[SEMVER_PATCH]` Fixed various linting errors introduced by a major version upgrade of the `standard` package
