@@ -4,11 +4,9 @@
   "description": "A small library providing various utility functions used in tailored apps backends (propably not very useful for anyone else)",
   "main": "index.js",
   "scripts": {
-    "preversion": "npm run babel:transpile && git add ./*.js && (git commit -m \"transpile\" || echo \"skipping transpile commit\") && npm run lint && npm run test",
-    "babel:transpile": "babel --no-comments src -d .",
-    "babel:watch": "npm run babel:transpile -- --watch",
+    "preversion": "npm run lint && npm run test",
     "lint": "standard \"src/**/*.js\"",
-    "test": "mocha --require test/util/babel-register"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -18,7 +16,7 @@
     "utility",
     "tailored apps"
   ],
-  "author": "Michael Smesnik <ms@tailored-apps.com>, Stephan Schmid <stephan@tailored-apps.com>",
+  "author": "Michael Smesnik <ms@tailored-apps.com>",
   "license": "ISC",
   "dependencies": {
     "deepmerge": "^1.3.1",
