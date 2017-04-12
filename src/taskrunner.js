@@ -1,6 +1,4 @@
-'use strict'
-
-import { getDuration } from './util'
+const { getDuration } = require('./util')
 
 // Simple queuing mechanism to avoid potential race conditions when running multple tasks in parallel
 let taskRunning = false
@@ -75,6 +73,6 @@ export default class Taskrunner {
     })
   }
 
-  // This method can be implemented by chaild classes to save task statistics (e.g. elapsed time, etc)
+  // This method can be implemented by child classes to save task statistics (e.g. elapsed time, etc)
   saveStats (stats) { }
 }

@@ -1,8 +1,6 @@
-'use strict'
-
-import moment from 'moment'
-import path from 'path'
-import winston from 'winston'
+const moment = require('moment')
+const path = require('path')
+const winston = require('winston')
 
 const formatter = (opts) => `[${moment().format('YYYY-MM-DD HH:mm:ss.SSS')}] [${opts.level}] ${opts.message}`
 
@@ -51,5 +49,7 @@ function createLogger (cfg = { }) {
   return logger
 }
 
-export default createLogger
-export { formatter }
+module.exports = {
+  createLogger,
+  formatter
+}
