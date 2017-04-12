@@ -18,7 +18,7 @@
     "utility",
     "tailored apps"
   ],
-  "author": "Michael Smesnik, Stephan Schmid",
+  "author": "Michael Smesnik <ms@tailored-apps.com>, Stephan Schmid <stephan@tailored-apps.com>",
   "license": "ISC",
   "dependencies": {
     "deepmerge": "^1.3.1",
@@ -30,7 +30,6 @@
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
-    "babel-eslint": "^7.1.1",
     "babel-plugin-syntax-async-functions": "^6.13.0",
     "babel-plugin-syntax-object-rest-spread": "^6.13.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
@@ -38,18 +37,6 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-register": "^6.23.0",
     "chai": "^3.5.0",
-    "eslint": "^3.14.1",
-    "eslint-config-standard": "^7.0.0",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^2.1.1",
-    "mocha": "^3.2.0",
-    "standard": "^9.0.0"
-  },
-  "standard": {
-    "parser": "babel-eslint",
-    "ignore": [
-      "static/",
-      "dist/"
-    ]
+    "mocha": "^3.2.0"
   }
 }
