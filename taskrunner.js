@@ -4,6 +4,7 @@ const { getDuration } = require('./util')
 let taskRunning = false
 let queue = new Set()
 
+// @todo Reimplement this semi-awkward thing in a functional way with proper dependency injection and all
 class Taskrunner {
   constructor (task, interval, logger, friendlyName = 'PeriodicTask', logLevel = 'info') {
     this.task = task
