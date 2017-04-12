@@ -3,6 +3,9 @@
   "version": "7.0.3",
   "description": "A small library providing various utility functions used in tailored apps backends (propably not very useful for anyone else)",
   "main": "index.js",
+  "engines": {
+    "node": ">=7.6.0"
+  },
   "scripts": {
     "preversion": "npm run lint && npm run test",
     "lint": "standard \"src/**/*.js\"",
