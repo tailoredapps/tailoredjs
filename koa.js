@@ -104,7 +104,7 @@ function requestDigester(logger) {
             return regeneratorRuntime.awrap(next());
 
           case 5:
-            return _context3.abrupt('return', _context3.sent);
+            return _context3.abrupt('return');
 
           case 6:
 

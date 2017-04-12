@@ -1,11 +1,15 @@
 # Changelog
 
+## 2017-04-12 `v7.0.3`
+* ms `[SEMVER_PATCH]` Refactored linting dependencies
+* ms `[SEMVER_PATCH]` Fixed various linting errors introduced by a major version upgrade of the `standard` package
+
 ## 2017-04-05 `v7.0.2`
 * ms `[SEMVER_PATCH]` `requestProfiler` middleware will now emit a `debug` statement at the start of each request
 
 ## 2017-03-06 `v7.0.1`
 * ms `[SEMVER_MAJOR]` Removed `ddos-protection` module
-* ms `[SEMVER_MAJOR]` to determine response body, koa error handler will now evaluate an errors properties in the following order: `err.body`, `err.error`, `err.message`
+* ms `[SEMVER_MAJOR]` To determine response body, koa error handler will now evaluate an errors properties in the following order: `err.body`, `err.error`, `err.message`
 
 ## 2017-03-02 `v6.0.1`
 * ms `[SEMVER_MAJOR]` Refactored logging configuration:
@@ -16,7 +20,7 @@
 * ms `[SEMVER_MAJOR]` koa error handler middleware now prefers an errors `body` over a `message` property if both are set
 
 ## 2016-12-23 `v4.0.0`
-* ms `[SEMVER_MAJOR]` rename all koa middleware functions from `get[MyFunc]Middleware` to `myFunc`
+* ms `[SEMVER_MAJOR]` Renamed all koa middleware functions from `get[MyFunc]Middleware` to `myFunc`
 
 ## 2016-12-16 `v3.2.0`
 * ms `[SEMVER_MINOR]` Add support for per-request extra options in `api-connector`

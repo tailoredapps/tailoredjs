@@ -118,13 +118,9 @@ function getConnector(_ref) {
 
           case 2:
             requestOptions = getSpec((0, _deepmerge2.default)(endpoints.get(endpointId), extraRequestOptions), params);
-            _context.next = 5;
-            return regeneratorRuntime.awrap(requestFn(requestOptions));
+            return _context.abrupt('return', requestFn(requestOptions));
 
-          case 5:
-            return _context.abrupt('return', _context.sent);
-
-          case 6:
+          case 4:
           case 'end':
             return _context.stop();
         }
