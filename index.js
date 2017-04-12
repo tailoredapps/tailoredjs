@@ -1,9 +1,9 @@
 // This file exports various things from other modules, more or less arbitrarily (based on usage patterns, really)
-const { getConnector } = require('./api-connector')
-const koaMiddleware = require('./koa-middleware')
-const { createLogger } = require('./logger')
-const { Taskrunner } = require('./taskrunner')
-const util = require('./util')
+const { getConnector } = require('./lib/api-connector')
+const koaMiddleware = require('./lib/koa-middleware')
+const { createLogger } = require('./lib/logger')
+const { Taskrunner } = require('./lib/taskrunner')
+const util = require('./lib/util')
 
 module.exports = {
   getConnector,
