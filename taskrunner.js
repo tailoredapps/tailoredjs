@@ -4,7 +4,7 @@ const { getDuration } = require('./util')
 let taskRunning = false
 let queue = new Set()
 
-export default class Taskrunner {
+class Taskrunner {
   constructor (task, interval, logger, friendlyName = 'PeriodicTask', logLevel = 'info') {
     this.task = task
     this.interval = interval
@@ -76,3 +76,5 @@ export default class Taskrunner {
   // This method can be implemented by child classes to save task statistics (e.g. elapsed time, etc)
   saveStats (stats) { }
 }
+
+module.exports = { Taskrunner }
