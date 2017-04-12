@@ -1,6 +1,4 @@
-'use strict'
-
-import { getDuration } from './util'
+const { getDuration } = require('./util')
 
 /**
  * Returns a request profiler middleware function for use in koa 2.x
@@ -8,7 +6,7 @@ import { getDuration } from './util'
  * @param logger
  * @returns {profileRequest}
  */
-export function requestProfiler (logger) {
+function requestProfiler (logger) {
   return async function profileRequest (ctx, next) {
     logger.debug(`${ctx.method} ${ctx.url} starting`)
 
@@ -38,7 +36,7 @@ export function requestProfiler (logger) {
  * @param modifyMessage
  * @returns {handleError}
  */
-export function errorHandler (logger, modifyMessage) {
+function errorHandler (logger, modifyMessage) {
   return async function handleError (ctx, next) {
     try {
       await next()
@@ -99,7 +97,7 @@ export function errorHandler (logger, modifyMessage) {
  * @param methodPropName
  * @returns {digestRequest}
  */
-export function requestDigester (logger, methodPropName = 'digestMethod') {
+function requestDigester (logger, methodPropName = 'digestMethod') {
   return async function digestRequest (ctx, next) {
     const digestMethod = ctx.state[methodPropName]
 
@@ -120,4 +118,10 @@ export function requestDigester (logger, methodPropName = 'digestMethod') {
 
     await next()
   }
+}
+
+module.exports = {
+  requestProfiler,
+  errorHandler,
+  requestDigester
 }
