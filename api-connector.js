@@ -1,130 +1,125 @@
-'use strict';
+const deepmerge = require('deepmerge')
+const request = require('request-promise')
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.METHOD_DELETE = exports.METHOD_PUT = exports.METHOD_PATCH = exports.METHOD_POST = exports.METHOD_GET = undefined;
+const { replaceTokens } = require('./util')
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+const METHOD_GET = 'get'
+const METHOD_POST = 'post'
+const METHOD_PATCH = 'patch'
+const METHOD_PUT = 'put'
+const METHOD_DELETE = 'delete'
 
-exports.getRequestSpec = getRequestSpec;
-exports.default = getConnector;
+const allowedMethods = [ METHOD_GET, METHOD_POST, METHOD_PATCH, METHOD_PUT, METHOD_DELETE ]
 
-var _deepmerge = require('deepmerge');
+/**
+ * Returns the options object used by the request function
+ *
+ * Endpoint specs can contain "getPath", "getQuery" and "getBody" functions - if present, these will be called (with request
+ * params passed in) and their return value will be used for request path, query string and body respectively.
+ *
+ * Otherwise, params will be sent in request body for requests that can have one (post, patch, put) or in the query string for
+ * requests that cannot have a body (get & co).
+ *
+ * Endpoint spec properties:
+ *
+ * route        Endpoint uri ("/users", "/foo?bar={baz}&some={thing}")
+ * method       Request method
+ * doReplace    Attempt to replace tokens in request path (e.g. replace "{foo}" with value of params.foo in request path - will only be ignored if a getPath function has been provided)
+ * getPath      (optional) Function that will be called to determine request path. Called with "route" and "params" passed in, expected to return a string.
+ * getQuery     (optional) Function that will be used to determine query params. Called with "params" passed in, expected to return an object.
+ * getBody      (optional) Function that will be called to determine request body. Called with "params" passed in, expected to return an object. Will not be called for requests that cannot have a body.
+ *
+ * @param baseUrl
+ * @param endpoint
+ * @param params
+ * @returns {{baseUrl: *, method: *, uri: string, qs: {}, body: undefined, json: boolean}}
+ */
+function getRequestSpec (baseUrl, endpoint, params) {
+  const { route, method, doReplace, getPath, getQuery, getBody, json = true, ...opts } = endpoint // default to json = true for all endpoints
 
-var _deepmerge2 = _interopRequireDefault(_deepmerge);
+  const canHaveBody = method === METHOD_PATCH || method === METHOD_POST || method === METHOD_PUT
+  // If no getQuery function has been provided: pass params as query string for requests that cannot have a body
+  const qs = getQuery ? getQuery(params) : (!canHaveBody ? params : { })
+  // If no getPath function has been provided: replace tokens from params when "doReplace" is true, otherwise use the route as is
+  const uri = getPath ? getPath(route, params) : (doReplace ? replaceTokens(route, params) : route)
+  // Use params as request body if no getBody function has been provided
+  const body = canHaveBody ? (getBody ? getBody(params) : params) : undefined
 
-var _requestPromise = require('request-promise');
-
-var _requestPromise2 = _interopRequireDefault(_requestPromise);
-
-var _util = require('./util');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-var METHOD_GET = exports.METHOD_GET = 'get';
-var METHOD_POST = exports.METHOD_POST = 'post';
-var METHOD_PATCH = exports.METHOD_PATCH = 'patch';
-var METHOD_PUT = exports.METHOD_PUT = 'put';
-var METHOD_DELETE = exports.METHOD_DELETE = 'delete';
-
-var allowedMethods = [METHOD_GET, METHOD_POST, METHOD_PATCH, METHOD_PUT, METHOD_DELETE];
-
-function getRequestSpec(baseUrl, endpoint, params) {
-  var route = endpoint.route,
-      method = endpoint.method,
-      doReplace = endpoint.doReplace,
-      getPath = endpoint.getPath,
-      getQuery = endpoint.getQuery,
-      getBody = endpoint.getBody,
-      _endpoint$json = endpoint.json,
-      json = _endpoint$json === undefined ? true : _endpoint$json,
-      opts = _objectWithoutProperties(endpoint, ['route', 'method', 'doReplace', 'getPath', 'getQuery', 'getBody', 'json']);
-
-  var canHaveBody = method === METHOD_PATCH || method === METHOD_POST || method === METHOD_PUT;
-
-  var qs = getQuery ? getQuery(params) : !canHaveBody ? params : {};
-
-  var uri = getPath ? getPath(route, params) : doReplace ? (0, _util.replaceTokens)(route, params) : route;
-
-  var body = canHaveBody ? getBody ? getBody(params) : params : undefined;
-
-  return _extends({
-    baseUrl: baseUrl,
-    method: method,
-    uri: uri,
-    qs: qs,
-    body: body,
-    json: json
-  }, opts);
+  return {
+    baseUrl,
+    method,
+    uri,
+    qs,
+    body,
+    json,
+    ...opts
+  }
 }
 
-function getConnector(_ref) {
-  var _this = this;
-
-  var baseUrl = _ref.baseUrl,
-      endpointSpecs = _ref.endpoints,
-      logger = _ref.logger,
-      _ref$requestFn = _ref.requestFn,
-      requestFn = _ref$requestFn === undefined ? _requestPromise2.default : _ref$requestFn;
-
+/**
+ * Returns an async api connector function that can be used to access api endpoints in a simple and consistent manner.
+ *
+ * This function expects an api baseUrl as well as a list of endpoint specs and a logger object.
+ * Endpoint specs are objects specifying various endpoint characteristics, such as the endpoint uri and the request method.
+ *
+ * The basic idea here is to abstract away the actual details of each endpoint and instead allow clients to simply get
+ * data from or send data to an endpoint by calling a simple function and passing in their data as an object. Endpoint
+ * URIs therefore need not be known to callers, and neither do they need to know about the actual API url or request methods.
+ *
+ * So, for instance, an endpoint to get a particular user might be specified as follows:
+ *
+ * { id: 'user_details', method: 'get', uri: '/users/{id}' }
+ *
+ * To access the endpoint, clients would implement the following code:
+ *
+ * const callApi = getConnector({ baseUrl: 'https://foo.bar/v1', endpoints: [ ... ], logger: myLoggerInstance })
+ *
+ * const userData = await callApi('user_details', { id: 420 })
+ *
+ * The "{id}" token in the endpoint uri will automatically be replaced by the value of the "id" property of the passed in params object.
+ *
+ * @param baseUrl
+ * @param endpointSpecs
+ * @param logger
+ * @param requestFn
+ * @returns {function(*=, *=)}
+ */
+function getConnector ({ baseUrl, endpoints: endpointSpecs, logger, requestFn = request }) {
   if (!baseUrl || typeof baseUrl !== 'string' || baseUrl.length === 0 || !endpointSpecs || !Array.isArray(endpointSpecs) || endpointSpecs.length === 0) {
-    throw new Error('Invalid arguments passed to getConnector()');
+    throw new Error('Invalid arguments passed to getConnector()')
   }
 
-  if (endpointSpecs.some(function (_ref2) {
-    var id = _ref2.id,
-        route = _ref2.route,
-        method = _ref2.method;
-    return !id || !route || !method || !allowedMethods.includes(method.toLowerCase());
-  })) {
-    logger.debug('Endpoint specs: %s', JSON.stringify(endpointSpecs));
+  if (endpointSpecs.some(({ id, route, method }) => !id || !route || !method || !allowedMethods.includes(method.toLowerCase()))) {
+    logger.debug('Endpoint specs: %s', JSON.stringify(endpointSpecs))
 
-    throw new Error('Invalid endpoint specification encountered.');
+    throw new Error('Invalid endpoint specification encountered.')
   }
 
-  var endpoints = new Map(endpointSpecs.map(function (_ref3) {
-    var id = _ref3.id,
-        route = _ref3.route,
-        method = _ref3.method,
-        props = _objectWithoutProperties(_ref3, ['id', 'route', 'method']);
+  // map endpoint ids to standardized specs
+  const endpoints = new Map(endpointSpecs.map((spec) => {
+    const { id, route, method } = spec
 
-    return [id, _extends({ route: route, method: method.toLowerCase(), doReplace: route.includes('{') }, props)];
-  }));
-  var getSpec = function getSpec() {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
+    return [ id, Object.assign({ }, spec, { method: method.toLowerCase(), doReplace: route.includes('{') }) ]
+  }))
+  const getSpec = (...args) => getRequestSpec(baseUrl, ...args)
+
+  return async (endpointId, params = { }, extraRequestOptions = { }) => {
+    if (!endpointId || !endpoints.has(endpointId)) {
+      throw new Error(`Invalid endpoint id "${endpointId}" provided.`)
     }
 
-    return getRequestSpec.apply(undefined, [baseUrl].concat(args));
-  };
+    const requestOptions = getSpec(deepmerge(endpoints.get(endpointId), extraRequestOptions), params)
 
-  return function _callee(endpointId) {
-    var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var extraRequestOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-    var requestOptions;
-    return regeneratorRuntime.async(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            if (!(!endpointId || !endpoints.has(endpointId))) {
-              _context.next = 2;
-              break;
-            }
+    return requestFn(requestOptions)
+  }
+}
 
-            throw new Error('Invalid endpoint id "' + endpointId + '" provided.');
-
-          case 2:
-            requestOptions = getSpec((0, _deepmerge2.default)(endpoints.get(endpointId), extraRequestOptions), params);
-            return _context.abrupt('return', requestFn(requestOptions));
-
-          case 4:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, null, _this);
-  };
+module.exports = {
+  METHOD_GET,
+  METHOD_POST,
+  METHOD_PATCH,
+  METHOD_PUT,
+  METHOD_DELETE,
+  getRequestSpec,
+  getConnector
 }
