@@ -1,8 +1,7 @@
-'use strict'
+/* eslint-env mocha */
+const { expect } = require('chai')
 
-import { expect } from 'chai'
-
-import * as u from '../util'
+const u = require('../lib/util')
 
 describe('util module', function () {
   describe('replaceTokens', function () {

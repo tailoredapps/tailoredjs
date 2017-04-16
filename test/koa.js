@@ -1,15 +1,15 @@
-'use strict'
-
 /* eslint-env mocha */
+const { expect } = require('chai')
 
-import { expect } from 'chai'
-
-import * as k from '../src/koa'
+const k = require('../lib/koa-middleware')
 
 describe('koa related functionality', function () {
   describe('error handler middleware', function () {
     const noop = function () { }
     const fauxLogger = { error: noop, debug: noop }
+    const getThrower = (err) => async () => {
+      throw err
+    }
 
     it('calls error message modifier function', async function () {
       const origMessage = 'error message'
@@ -51,42 +51,46 @@ describe('koa related functionality', function () {
       expect(ctx.status).to.equal(404)
     })
 
-    it('uses message if no body is set', async function () {
-      const willThrow = async () => {
-        let e = new Error()
-        e.message = 'message'
-
-        throw e
-      }
+    it('prefers body over error prop', async function () {
+      let err = new Error()
+      err.error = 'error'
+      err.body = 'body'
+      err.message = 'message'
 
       let ctx = { }
 
       const handler = k.errorHandler(fauxLogger)
-
-      await handler(ctx, willThrow)
-
-      expect(ctx).to.include.all.keys([ 'status', 'body' ])
-      expect(ctx.body).to.equal('message')
-
-    })
-
-    it('uses body property if present', async function () {
-      const willThrow = async () => {
-        let e = new Error()
-        e.message = 'message'
-        e.body = 'body'
-
-        throw e
-      }
-
-      let ctx = { }
-
-      const handler = k.errorHandler(fauxLogger)
-
-      await handler(ctx, willThrow)
+      await handler(ctx, getThrower(err))
 
       expect(ctx).to.include.all.keys([ 'status', 'body' ])
       expect(ctx.body).to.equal('body')
+    })
+
+    it('prefers error over message prop', async function () {
+      let err = new Error()
+      err.error = 'error'
+      err.message = 'message'
+
+      let ctx = { }
+
+      const handler = k.errorHandler(fauxLogger)
+      await handler(ctx, getThrower(err))
+
+      expect(ctx).to.include.all.keys([ 'status', 'body' ])
+      expect(ctx.body).to.equal('error')
+    })
+
+    it('uses message if neither body nor error props are set', async function () {
+      let err = new Error()
+      err.message = 'message'
+
+      let ctx = { }
+
+      const handler = k.errorHandler(fauxLogger)
+      await handler(ctx, getThrower(err))
+
+      expect(ctx).to.include.all.keys([ 'status', 'body' ])
+      expect(ctx.body).to.equal('message')
     })
   })
 })

@@ -1,36 +1,14 @@
-'use strict';
+// This file exports various things from other modules, more or less arbitrarily (based on usage patterns, really)
+const { getConnector } = require('./lib/api-connector')
+const koaMiddleware = require('./lib/koa-middleware')
+const { createLogger } = require('./lib/logger')
+const { Taskrunner } = require('./lib/taskrunner')
+const util = require('./lib/util')
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.koa = exports.util = exports.createLogger = exports.Taskrunner = exports.DDoSProtection = undefined;
-
-var _ddosProtection = require('./ddos-protection');
-
-var _ddosProtection2 = _interopRequireDefault(_ddosProtection);
-
-var _logger = require('./logger');
-
-var _logger2 = _interopRequireDefault(_logger);
-
-var _taskrunner = require('./taskrunner');
-
-var _taskrunner2 = _interopRequireDefault(_taskrunner);
-
-var _util = require('./util');
-
-var util = _interopRequireWildcard(_util);
-
-var _koa = require('./koa');
-
-var koa = _interopRequireWildcard(_koa);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.DDoSProtection = _ddosProtection2.default;
-exports.Taskrunner = _taskrunner2.default;
-exports.createLogger = _logger2.default;
-exports.util = util;
-exports.koa = koa;
+module.exports = {
+  getConnector,
+  koaMiddleware,
+  createLogger,
+  Taskrunner,
+  util
+}
