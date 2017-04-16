@@ -1,4 +1,6 @@
 # Changelog
+## 2017-04-17 `v8.1.0`
+* ms `[SEMVER_MINOR]` Added `cacheLifetime` to `koa-middleware`
 
 ## 2017-04-12 `v8.0.0`
 * ms `[SEMVER_MAJOR]` Reworked file structure and exports - no more default exports, all modules now use named exports only
