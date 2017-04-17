@@ -96,7 +96,7 @@ describe('koa related functionality', function () {
     })
   })
 
-  describe('cache lifetime middleware', function () {
+  describe('cache lifetime helper middleware', function () {
     const fauxCtx = () => {
       let headers = {}
 
@@ -110,7 +110,7 @@ describe('koa related functionality', function () {
         }
       }
     }
-    const handleCacheLifetime = k.cacheLifetime(fauxLogger)
+    const handleCacheLifetime = k.cacheLifetimeHelper(fauxLogger)
 
     it('provides a setCacheLifetime function on context state', async function () {
       let ctx = fauxCtx()

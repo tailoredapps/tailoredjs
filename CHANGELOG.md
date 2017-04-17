@@ -1,4 +1,7 @@
 # Changelog
+## 2017-04-18 `v8.1.1`
+* ms `[SEMVER_PATCH]` Renamed `cacheLifetime` to the more appropriate `cacheLifetimeHelper` (yes, in retrospective, a bit more thought should probably have been given to the naming of that function in the first place). `cacheLifetime` still exists as an alias for `cacheLifetimeHelper`, but is marked as deprecated and will be removed in the next major version release.
+ 
 ## 2017-04-17 `v8.1.0`
 * ms `[SEMVER_MINOR]` Added `cacheLifetime` to `koa-middleware`
 
