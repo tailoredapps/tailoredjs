@@ -1,4 +1,8 @@
 # Changelog
+## 2017-10-05 `v9.0.0`
+* ms `[SEMVER_MAJOR]` Removed `logger` module
+* ms `[SEMVER_MAJOR]` Removed `getAdjustedPort` util function
+
 ## 2017-04-17 `v8.1.0`
 * ms `[SEMVER_MINOR]` Added `cacheLifetime` to `koa-middleware`
 
