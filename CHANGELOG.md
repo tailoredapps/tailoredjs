@@ -1,4 +1,7 @@
 # Changelog
+## 2017-10-30 `v9.0.1`
+* ms `[SEMVER_PATCH]` Log output for `errorHandler` middleware no longer includes the word "error" for successful requests.
+
 ## 2017-10-05 `v9.0.0`
 * ms `[SEMVER_MAJOR]` Removed `logger` module
 * ms `[SEMVER_MAJOR]` Removed `getAdjustedPort` util function
