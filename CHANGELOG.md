@@ -1,4 +1,8 @@
 # Changelog
+## 2017-11-10 `v10.0.0`
+* ms `[SEMVER_MAJOR]` Taskrunner is no longer a named export
+* ms `[SEMVER_MAJOR]` Removed deprecated `cacheLifetime` export from `koa-middleware` module (`cacheLifetimeHelper` export remains unchanged)
+
 ## 2017-10-30 `v9.0.1`
 * ms `[SEMVER_PATCH]` Log output for `errorHandler` middleware no longer includes the word "error" for successful requests.
 
